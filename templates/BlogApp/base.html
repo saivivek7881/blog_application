@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+{% load static %}
+{% load BlogApp_tags %}
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Latest Posts{% endblock %}</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU8t94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background: url('{% static "images/background3.jpg" %}') no-repeat center center/cover;
+                color: #333;
+                background-attachment: fixed;
+            }
+            header {
+                text-align: center;
+                padding: 10px;
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                font-size: 15px;
+                height:80px;
+            }
+            .container {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                padding:10px;
+
+
+            }
+            .content {
+                 width: 70%; /* Adjust the width of the main content */
+                 margin-right: 30px;
+            }
+            .sidebar {
+                width: 30%;
+                border:1px solid white;
+                background-color:white;
+                padding:10px;
+
+            }
+
+
+            .sidebar-card {
+                background: white;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+                padding: 15px;
+            }
+            a {
+    text-decoration: none; /* Removes underline */
+    color: #4b0082; /* Sets a readable and elegant color */
+}
+
+a:hover {
+     /* Optional: underline on hover */
+    color: #8a2be2; /* Slightly brighter color on hover */
+}
+footer {
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.footer-container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+header h1 {
+    color: white !important;
+}
+
+/* Ensure footer text is white */
+footer p{
+    color: white !important;
+}
+
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Vivek Blog</h1>
+        </header>
+
+        <div class="container">
+            <div class="content">
+                {% block content %}{% endblock %}
+            </div>
+
+            <aside class="sidebar">
+                <div class="sidebar-card">
+                    <h2>Vivek Blog</h2>
+                    <p>Watch here for IT-related content..!!</p>
+                    <p>The total number of published posts till today: {% total_posts %}</p>
+                    <h3>Latest Posts:</h3>
+                    {% show_latest_posts 5 %}
+                    <h3>Most Commented Posts:</h3>
+                    {% get_most_commented_posts as most_commented_posts %}
+                    <ul>
+                        {% for post in most_commented_posts %}
+                            <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    <footer>
+    <div class="footer-container">
+        <p>&copy; 2025 Vivek Blog. All Rights Reserved.</p>
+
+    </div>
+</footer>
+
+    </body>
+</html>

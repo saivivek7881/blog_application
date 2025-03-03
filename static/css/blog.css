@@ -1,0 +1,8 @@
+header h1 {
+    color: white !important;
+}
+
+/* Ensure footer text is white */
+footer {
+    color: white !important;
+}

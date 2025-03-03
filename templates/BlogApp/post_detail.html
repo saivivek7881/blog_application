@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+{% extends 'BlogApp/base.html' %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+    <style>
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            color: #4b0082;
+            margin-bottom: 15px;
+        }
+        #date {
+            font-size: 14px;
+            color: #555;
+            font-style: italic;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .btn-primary {
+            display: block;
+            width: fit-content;
+            margin: 10px auto;
+            background-color: #8a2be2;
+            border-color: #8a2be2;
+        }
+        .btn-primary:hover {
+            background-color: #4b0082;
+            border-color: #4b0082;
+        }
+        h4 {
+            margin-top: 30px;
+            color: darkblue;
+            text-decoration: underline;
+        }
+        h5 a {
+            color: #8a2be2;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        h5 a:hover {
+            text-decoration: underline;
+            color: #4b0082;
+        }
+        .comment-section {
+            background-color: #f8f8f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        #ch {
+            font-weight: bold;
+            color: #4b0082;
+            margin-top: 10px;
+        }
+        .cb {
+            background: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="submit"] {
+            background: #8a2be2;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background: #4b0082;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+        #one{
+            color:white;
+        }
+    </style>
+
+    <h1>{{ post.title }}</h1>
+    <p id='date'>Published on {{ post.publish }} by {{ post.author|title }}</p>
+    <p>{{ post.body|linebreaks }}</p>
+
+    <a href="/{{ post.id }}/share/" class="btn btn-lg btn-primary" id="one">Share Post By Email</a>
+
+    <h4>Similar Posts</h4>
+    {% if similar_posts %}
+        {% for post in similar_posts %}
+            <h5><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h5>
+        {% endfor %}
+    {% else %}
+        <p>No Similar Posts yet</p>
+    {% endif %}
+
+    <div class="comment-section">
+        {% with comments.count as comments_count %}
+            <h2>{{ comments_count }} Comment{{ comments_count|pluralize }}</h2>
+        {% endwith %}
+
+        {% if comments %}
+            {% for comment in comments %}
+                <p id='ch'>Comment {{ forloop.counter }} by {{ comment.name }} on {{ comment.created }}</p>
+                <div class="cb">{{ comment.body|linebreaks }}</div>
+                <hr />
+            {% endfor %}
+        {% else %}
+            <p>There are NO Comments Yet !!!</p>
+        {% endif %}
+
+        {% if csubmit %}
+            <h2>Your Comment Added Successfully</h2>
+        {% else %}
+            <form method="post">
+                {{ form.as_p }}
+                {% csrf_token %}
+                <input type="submit" value="Submit Comment">
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}
